@@ -17,6 +17,7 @@ URL:		https://github.com/aristocratos/btop
 BuildRequires:	cmake >= 3.14
 BuildRequires:	gcc-c++ >= 11
 BuildRequires:	libcap-devel
+BuildRequires:	lowdown
 BuildRequires:	ninja
 BuildRequires:	rpmbuild(macros) >= 1.596
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -75,24 +76,13 @@ DESTDIR=$RPM_BUILD_ROOT %{__ninja} -C build install
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-# Optionally set capabilities for signal sending and /proc access
-# (required for Intel GPU monitoring and CPU wattage):
-# setcap cap_sys_ptrace,cap_net_admin+ep %%{_bindir}/btop
-
 %files
 %defattr(644,root,root,755)
 %doc README.md CHANGELOG.md LICENSE
-%attr(755,root,root) %{_bindir}/btop
+%attr(755,root,root) %caps(cap_sys_ptrace,cap_net_admin+ep) %{_bindir}/btop
 %{_datadir}/applications/btop.desktop
 %{_datadir}/icons/hicolor/*/apps/btop.*
-%{_datadir}/pixmaps/btop.png
 %dir %{_datadir}/btop
 %dir %{_datadir}/btop/themes
 %{_datadir}/btop/themes/*.theme
 %{_mandir}/man1/btop.1*
-
-%changelog
-* Sun Mar 15 2026 Wojciech Błaszkowski <wojciech@blaszkowski.com> - 1.4.6-1
-- Initial PLD package / version 1.4.6
-
