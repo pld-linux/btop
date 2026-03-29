@@ -1,4 +1,3 @@
-# $Revision$, $Date$
 #
 # Conditional build:
 %bcond_without	gpu		# GPU monitoring support
